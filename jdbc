@@ -1,0 +1,65 @@
+//jdbc java data base connections
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+public class Test {
+
+                public static void main(String[] args) throws Exception {
+                        String userName="root";
+                        String passWord="";
+                        String DBurl="jdbc:mysql://localhost/test1";
+                        
+                        //as database will not be in the same system all time
+                        //String query="INSERT INTO `test`(`name`,`contactnumber`,`email`) VALUES('nivi',12345678901,'nivi@gmail.com')";
+                        //String query ="DELETE FROM `test` WHERE name ='pavi'";
+                        String qry="Select * from table1";
+                        Connection dbConnection = null;
+                        Statement stmtToBeExecuted = null;
+                        ResultSet results = null;
+                        PreparedStatement smt=null;
+                        
+                        //exception because many possibilities arrive due to database
+                          Class.forName("com.mysql.jdbc.Driver");
+                      
+                        //to create a connection
+                        //get connection static method from driver class
+                        dbConnection =(Connection) DriverManager.getConnection(DBurl,userName,passWord);
+                      
+                        //statement object is referenced
+                       stmtToBeExecuted= (Statement)dbConnection.createStatement()  ;
+                      
+                       Scanner in = new Scanner(System.in);
+                       
+                        
+                       smt = (PreparedStatement) dbConnection.prepareStatement("INSERT INTO `table1`(`name`, `contactnumber`, `email`) VALUES (?,?,?)");
+                       smt.setString(1, "arpana");
+                       smt.setInt(2, 654987);
+                       smt.setString(3,"arpana@gmail.com");
+                       smt.execute();
+                                    					  
+                       /* System.out.println("Enter the details...");
+                        String query="INSERT INTO `test`(`name`,`contactnumber`,`email`) VALUES('"+in.next()+"',"+in.nextInt()+",'"+in.next()+"')";
+                       stmtToBeExecuted.executeUpdate(query);
+                        */
+                        
+                                         
+                       
+                        //results
+                           results=stmtToBeExecuted.executeQuery(qry);
+                     
+                        // to process result set
+                        //getString(pos)
+                                while(results.next()){
+                                        System.out.println(results.getString(1));
+                                        System.out.println(results.getString(2));
+                                        System.out.println(results.getString(3));
+                                }
+                      
+                }
+                
+}
